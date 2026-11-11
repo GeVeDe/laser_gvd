@@ -138,3 +138,8 @@ async function realizarEncargo(e) {
 
     closeModal();
 }
+
+// Configuración de Supabase
+const SUPABASE_URL = 'https://ynorgaqusydmyfqrkxij.supabase.co';
+const SUPABASE_ANON_KEY = 'Pega_aqui_tu_Publishable_key_de_supabase'; 
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
