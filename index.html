@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laser GVD | Piezas Únicas en Corte y Grabado Láser</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+
+        <!-- ENCABEZADO -->
+        <header class="profile-header">
+            <div class="avatar-container">
+                <img src="assets/LogoLaserGVD.png" alt="Laser GVD Logo" class="profile-img" onerror="this.src='https://via.placeholder.com/120'">
+            </div>
+            <h1 class="brand-title">@LASER_GVD</h1>
+            <p class="brand-tagline">Transformamos ideas en piezas únicas 💡</p>
+            <p class="brand-subtext">✨ Corte y grabado láser personalizado.</p>
+
+            <!-- REDES SOCIALES -->
+            <div class="social-icons">
+                <a href="https://instagram.com/LASER_GVD" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/526461378014" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.tiktok.com/@laser_gvd" target="_blank" class="social-btn"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.facebook.com/share/1E66YU8REz/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </header>
+
+        <!-- SECCIÓN DE CATÁLOGO DE PRODUCTOS -->
+        <section class="catalog-section">
+            <h2 class="section-title">Catálogo de Productos</h2>
+            <p class="section-subtitle">Grabados y entregas rápidas</p>
+
+            <div class="products-grid">
+
+                <!-- TARJETA 1 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper img-placas">
+                        <img src="assets/placa-mascotaAI.jpeg" alt="Placas para Mascota" onerror="this.src='https://via.placeholder.com/200'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Placas para Mascota aluminio de color</h3>
+                        <p class="price">Desde $60 MXN</p>
+                        <button class="btn-detail" onclick="openModal('Placas para Mascota aluminio de color', '60')">Ver Producto / Encargar</button>
+                    </div>
+                </div>
+
+                <!-- TARJETA 2 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="assets/placa-mascota-AC.jpeg" alt="Placa para mascota acero inoxidable" onerror="this.src='https://via.placeholder.com/200'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Placa para mascota acero inoxidable</h3>
+                        <p class="price">Desde $130 MXN</p>
+                        <button class="btn-detail" onclick="openModal('Placa para mascota acero inoxidable', '130')">Ver Producto / Encargar</button>
+                    </div>
+                </div>
+
+                <!-- TARJETA 3 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="assets/llavero-destapador.jpeg" alt="Llaveros Destapador" onerror="this.src='https://via.placeholder.com/200'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Llavero Destapador</h3>
+                        <p class="price">Desde $80 MXN</p>
+                        <button class="btn-detail" onclick="openModal('Llavero Destapador', '80')">Ver Producto / Encargar</button>
+                    </div>
+                </div>
+
+                <!-- TARJETA 4 -->
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <img src="assets/cuadro-blanco-negroAI.jpeg" alt="Cajas MDF" onerror="this.src='https://via.placeholder.com/200'">
+                    </div>
+                    <div class="product-info">
+                        <h3>Cuadros a blanco y negro</h3>
+                        <p class="price">Desde $120 MXN</p>
+                        <button class="btn-detail" onclick="openModal('Cuadros a blanco y negro', '120')">Ver Producto / Encargar</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE UBICACIÓN -->
+        <section class="location-section">
+            <h2 class="section-title"><i class="fas fa-map-marker-alt"></i> Punto de Entrega</h2>
+            <p class="location-text">Entregas personales y recolección de pedidos en Ensenada, B.C.</p>
+            <a href="https://maps.app.goo.gl/s2ywp4jkmcBTDWpA7" target="_blank" class="btn-location">
+                <i class="fas fa-directions"></i> Abrir en Google Maps
+            </a>
+        </section>
+
+        <!-- VENTANA EMERGENTE (MODAL) PARA ENCARGOS -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        
+        <h2 id="modalTitle">Nombre del Producto</h2>
+        <p id="modalPrice" class="price">$0 MXN</p>
+        <p class="modal-desc">Pieza personalizada mediante corte y grabado láser de alta precisión.</p>
+        
+        <hr class="divider">
+
+        <!-- FORMULARIO DE PERSONALIZACIÓN -->
+<form id="orderForm" onsubmit="realizarEncargo(event)">
+    
+    <!-- Contenedor Texto -->
+    <div class="form-group" id="textGroup">
+        <label for="customText">Texto o Nombre a grabar:</label>
+        <input type="text" id="customText" placeholder="Ej. Max / Tel: 646-123-4567" oninput="toggleFields()">
+    </div>
+
+    <!-- Contenedor Imagen -->
+    <div class="form-group" id="fileGroup">
+        <label for="customFile">Imagen o Logo de referencia:</label>
+        <div class="file-input-container" id="fileInputWrapper">
+            <input type="file" id="customFile" accept="image/*" onchange="previewImage(event)">
+            <label for="customFile" class="file-upload-btn">
+                <i class="fas fa-cloud-upload-alt"></i> Seleccionar imagen
+            </label>
+        </div>
+
+        <div id="imagePreviewContainer" class="preview-container" style="display: none;">
+            <img id="imagePreview" src="" alt="Vista previa">
+            <button type="button" class="remove-img-btn" onclick="removeImage()" title="Quitar imagen">&times;</button>
+        </div>
+
+        <small class="file-note">Si requieres imagen con texto, debe venir editada o podemos apoyarte. ⚠️ <em>Nota: El grabado está sujeto a aprobación según claridad, contraste y tamaño mínimo de letra.</em></small>
+    </div>
+
+    <div class="form-group">
+        <label>Tiempo estimado de entrega:</label>
+        <p class="delivery-time">⚡ 24 a 48 horas hábiles</p>
+    </div>
+
+    <!-- Botón principal para generar el pedido -->
+    <button type="submit" class="btn-order">
+        <i class="fas fa-check-circle"></i> Realizar Encargo
+    </button>
+
+    <!-- Botón secundario de WhatsApp para dudas -->
+    <a href="https://wa.me/526461378014?text=Hola%20Laser%20GVD,%20tengo%20una%20duda%20sobre%20un%20pedido." target="_blank" class="btn-whatsapp-support">
+        <i class="fab fa-whatsapp"></i> ¿Tienes dudas? Contáctanos por WhatsApp
+    </a>
+</form>
+        
+        <!-- FOOTER -->
+        <footer>
+            <p>© 2026 Laser GVD - Todos los derechos reservados.</p>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
