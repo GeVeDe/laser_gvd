@@ -133,7 +133,7 @@ async function realizarEncargo(e) {
     try {
         // Enviar a la base de datos de Supabase
         const { error } = await _supabase
-            .from('pedidos')
+            .from('Pedidos')
             .insert([nuevoPedido]);
 
         if (error) {
