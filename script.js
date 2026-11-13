@@ -101,7 +101,7 @@ window.onclick = function(event) {
 
 // Configuración de Supabase
 const SUPABASE_URL = 'https://ynorgaqusydmyfqrkxij.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_-kvtZaGkQo_RRrPmDbquyA_0eFoK15Y'; 
+const SUPABASE_ANON_KEY = 'sb_publishable_-kvtZaGkQo_RRrPmDbquyA_0efoKrqp'; 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Procesar el pedido, guardarlo en Supabase y generar número de orden único
