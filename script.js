@@ -99,7 +99,12 @@ window.onclick = function(event) {
     }
 }
 
-// Procesar el pedido y generar número de orden único
+// Configuración de Supabase
+const SUPABASE_URL = 'https://ynorgaqusydmyfqrkxij.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_-kvtZaGkQo_RRrPmDbquyA_0eFoK15Y'; 
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Procesar el pedido, guardarlo en Supabase y generar número de orden único
 async function realizarEncargo(e) {
     e.preventDefault();
 
@@ -122,24 +127,33 @@ async function realizarEncargo(e) {
         precio: precioSeleccionado,
         detalle: textoGrabado ? `Texto: ${textoGrabado}` : "Imagen de referencia adjunta",
         imagenBase64: fileInput.files.length > 0 ? previewImg.src : null,
-        estado: "Pendiente",
-        fecha: new Date().toLocaleTimeString()
+        estado: "Pendiente"
     };
 
-    // AQUÍ SE ENVIARÁ A TU BASE DE DATOS (Firebase/Supabase)
-    // Por ahora, simularemos el guardado y le mostraremos su número al cliente:
-    alert(`¡Pedido registrado con éxito! 🎉\nTu número de orden es: ${numeroOrden}\nGuárdalo para recoger tu pieza.`);
+    try {
+        // Enviar a la base de datos de Supabase
+        const { error } = await _supabase
+            .from('pedidos')
+            .insert([nuevoPedido]);
 
-    // Opcional: También puedes abrir WhatsApp para que el cliente te salude con su número si lo deseas como respaldo:
-    const telefonoWhatsApp = "526461378014";
-    let mensaje = `¡Hola Laser GVD! 👋 Mi número de orden es *${numeroOrden}* para el producto *${productoSeleccionado}* ($${precioSeleccionado} MXN).`;
-    const url = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, "_blank");
+        if (error) {
+            console.error("Error al guardar en Supabase:", error);
+            alert("Hubo un error al registrar el pedido en la base de datos. Inténtalo de nuevo.");
+            return;
+        }
 
-    closeModal();
+        alert(`¡Pedido registrado con éxito! 🎉\nTu número de orden es: ${numeroOrden}\nGuárdalo para recoger tu pieza.`);
+
+        // Abrir WhatsApp con el mensaje estructurado correctamente
+        const telefonoWhatsApp = "526461378014";
+        let mensaje = `¡Hola Laser GVD! 👋 Mi número de orden es *${numeroOrden}* para el producto *${productoSeleccionado}* ($${precioSeleccionado} MXN).`;
+        const url = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+        window.open(url, "_blank");
+
+        closeModal();
+
+    } catch (err) {
+        console.error("Excepción:", err);
+        alert("Ocurrió un error inesperado al procesar el pedido.");
+    }
 }
-
-// Configuración de Supabase
-const SUPABASE_URL = 'https://ynorgaqusydmyfqrkxij.supabase.co';
-const SUPABASE_ANON_KEY = 'Pega_aqui_tu_Publishable_key_de_supabase'; 
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
