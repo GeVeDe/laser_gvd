@@ -142,11 +142,10 @@ async function realizarEncargo(e) {
             return;
         }
 
-        alert(`¡Pedido registrado con éxito! 🎉\nTu número de orden es: ${numeroOrden}\nGuárdalo para recoger tu pieza.`);
-
-        // Abrir WhatsApp con el mensaje estructurado correctamente
+        // Abrir WhatsApp con el mensaje estructurado limpiamente
         const telefonoWhatsApp = "526461378014";
-        let mensaje = `¡Hola Laser GVD! 👋 Mi número de orden es *${numeroOrden}* para el producto *${productoSeleccionado}* ($${precioSeleccionado} MXN).`;
+        let mensaje = `¡Hola Laser GVD! 👋 Mi número de orden es *${numeroOrden}* para el producto *${productoSeleccionado}* ($${precioSeleccionado} MXN). Me gustaría recibir el método de pago para realizar la transferencia.`;
+        
         const url = `https://wa.me/${telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
         window.open(url, "_blank");
 
