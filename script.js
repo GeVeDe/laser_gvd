@@ -10,27 +10,45 @@ function openModal(nombre, precio) {
 
     const textGroup = document.getElementById("textGroup");
     const fileGroup = document.getElementById("fileGroup");
+    const petFieldsGroup = document.getElementById("petFieldsGroup");
+    const petCustomPhrase = document.getElementById("petCustomPhrase");
 
     document.getElementById("orderForm").reset();
     removeImage();
     resetFieldStates();
+    petCustomPhrase.style.display = "none";
 
-    const esPlacaMascota = nombre.toLowerCase().includes("placa");
+    // Detecta las 2 placas de mascota ("Placas para Mascota aluminio de color" y "Placa para mascota acero inoxidable")
+    const esPlacaMascota = nombre.toLowerCase().includes("placa") && nombre.toLowerCase().includes("mascota");
 
     if (esPlacaMascota) {
-        fileGroup.style.display = "none"; 
-        textGroup.style.display = "flex";
+        textGroup.style.display = "none";
+        fileGroup.style.display = "none";
+        petFieldsGroup.style.display = "block";
     } else {
-        fileGroup.style.display = "flex"; 
+        petFieldsGroup.style.display = "none";
         textGroup.style.display = "flex";
+        fileGroup.style.display = "flex";
     }
 
     document.getElementById("productModal").style.display = "flex";
 }
 
+function toggleCustomPhrase() {
+    const select = document.getElementById("petPhrase");
+    const customInput = document.getElementById("petCustomPhrase");
+    
+    if (select.value === "otra") {
+        customInput.style.display = "block";
+        customInput.focus();
+    } else {
+        customInput.style.display = "none";
+        customInput.value = "";
+    }
+}
+
 function toggleFields() {
     const textInput = document.getElementById("customText");
-    const textGroup = document.getElementById("textGroup");
     const fileGroup = document.getElementById("fileGroup");
 
     const tieneTexto = textInput.value.trim().length > 0;
@@ -59,7 +77,7 @@ function previewImage(event) {
             textGroup.classList.add("field-disabled");
             document.getElementById("customText").disabled = true;
         }
-        reader.readAsDataURL(file); // Convierte la imagen a Base64 para enviarla al POS
+        reader.readAsDataURL(file);
     }
 }
 
@@ -88,6 +106,7 @@ function resetFieldStates() {
 function closeModal() {
     document.getElementById("productModal").style.display = "none";
     document.getElementById("orderForm").reset();
+    document.getElementById("petCustomPhrase").style.display = "none";
     removeImage();
     resetFieldStates();
 }
@@ -108,13 +127,46 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 async function realizarEncargo(e) {
     e.preventDefault();
 
-    const textoGrabado = document.getElementById("customText").value.trim();
-    const fileInput = document.getElementById("customFile");
-    const previewImg = document.getElementById("imagePreview");
+    const esPlacaMascota = productoSeleccionado.toLowerCase().includes("placa") && productoSeleccionado.toLowerCase().includes("mascota");
+    let detallePedido = "";
+    let imagenBase64Final = null;
 
-    if (!textoGrabado && fileInput.files.length === 0) {
-        alert("Por favor, ingresa el texto a grabar o adjunta una imagen para continuar.");
-        return;
+    if (esPlacaMascota) {
+        const petName = document.getElementById("petName").value.trim();
+        const petPhone = document.getElementById("petPhone").value.trim();
+        const phraseSelect = document.getElementById("petPhrase").value;
+        const customPhrase = document.getElementById("petCustomPhrase").value.trim();
+
+        if (!petName || !petPhone) {
+            alert("Por favor, ingresa el nombre de la mascota y el teléfono de contacto.");
+            return;
+        }
+
+        let fraseFinal = "";
+        if (phraseSelect === "otra") {
+            fraseFinal = customPhrase;
+        } else {
+            fraseFinal = phraseSelect;
+        }
+
+        detallePedido = `Mascota: ${petName}`;
+        if (fraseFinal) {
+            detallePedido += ` | Frase: "${fraseFinal}"`;
+        }
+        detallePedido += ` | Tel: ${petPhone}`;
+
+    } else {
+        const textoGrabado = document.getElementById("customText").value.trim();
+        const fileInput = document.getElementById("customFile");
+        const previewImg = document.getElementById("imagePreview");
+
+        if (!textoGrabado && fileInput.files.length === 0) {
+            alert("Por favor, ingresa el texto a grabar o adjunta una imagen para continuar.");
+            return;
+        }
+
+        detallePedido = textoGrabado ? `Texto: ${textoGrabado}` : "Imagen de referencia adjunta";
+        imagenBase64Final = fileInput.files.length > 0 ? previewImg.src : null;
     }
 
     // Generar Número de Orden Único (Ej: GVD-8492)
@@ -125,13 +177,12 @@ async function realizarEncargo(e) {
         orden: numeroOrden,
         producto: productoSeleccionado,
         precio: precioSeleccionado,
-        detalle: textoGrabado ? `Texto: ${textoGrabado}` : "Imagen de referencia adjunta",
-        imagenBase64: fileInput.files.length > 0 ? previewImg.src : null,
+        detalle: detallePedido,
+        imagenBase64: imagenBase64Final,
         estado: "Pendiente"
     };
 
     try {
-        // Enviar a la base de datos de Supabase
         const { error } = await _supabase
             .from('Pedidos')
             .insert([nuevoPedido]);

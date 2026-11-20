@@ -133,12 +133,27 @@
                         <input type="text" id="customText" placeholder="Ej. Frase, dedicatoria o diseño" oninput="toggleFields()">
                     </div>
 
-                    <!-- Campos Específicos para Placas de Mascota (Nombre y Teléfono separados) -->
+                    <!-- Campos Específicos para Placas de Mascota (Nombre, Frase y Teléfono separados) -->
                     <div id="petFieldsGroup" style="display: none; margin-bottom: 15px;">
                         <div class="form-group" style="margin-bottom: 10px;">
                             <label for="petName">Nombre de la Mascota:</label>
                             <input type="text" id="petName" placeholder="Ej. Max">
                         </div>
+
+                        <div class="form-group" style="margin-bottom: 10px;">
+                            <label for="petPhrase">Frase arriba del teléfono (Opcional):</label>
+                            <select id="petPhrase" onchange="toggleCustomPhrase()">
+                                <option value="">Sin frase (Solo teléfono)</option>
+                                <option value="Regrésame a casa">Regrésame a casa</option>
+                                <option value="Marca a mi mami">Marca a mi mami</option>
+                                <option value="Marca a mi papi">Marca a mi papi</option>
+                                <option value="¡Me perdí! Ayúdame a volver">¡Me perdí! Ayúdame a volver</option>
+                                <option value="Soy muy querido, llámales">Soy muy querido, llámales</option>
+                                <option value="otra">Escribir otra frase...</option>
+                            </select>
+                            <input type="text" id="petCustomPhrase" placeholder="Escribe tu frase corta aquí" style="display: none; margin-top: 6px;">
+                        </div>
+
                         <div class="form-group">
                             <label for="petPhone">Teléfono de Contacto:</label>
                             <input type="text" id="petPhone" placeholder="Ej. 646 123 4567">
